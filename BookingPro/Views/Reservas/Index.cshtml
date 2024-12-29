@@ -1,0 +1,78 @@
+﻿@model IEnumerable<BookingPro.Models.Reserva>
+
+@{
+    ViewBag.Title = "Gestión de Reservas";
+}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<h2 class="text-center"><strong>Gestión de Reservas</strong></h2>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        @using (Html.BeginForm("FiltrarReservas", "Reservas", FormMethod.Get))
+        {
+            <div class="form-inline">
+                <div class="form-group mb-2 mr-2">
+                    <label for="FechaInicio" class="mr-2">Fecha Inicio:</label>
+                    <input type="date" class="form-control" id="FechaInicio" name="fechaInicio" required />
+                </div>
+                <div class="form-group mb-2 mr-2">
+                    <label for="FechaFin" class="mr-2">Fecha Fin:</label>
+                    <input type="date" class="form-control" id="FechaFin" name="fechaFin" required />
+                </div>
+                <div class="form-group mb-2 mr-2">
+                    <label for="SalaID" class="mr-2">Sala:</label>
+                    @Html.DropDownList("salaID", (SelectList)ViewBag.Salas, "Todas las salas", new { @class = "form-control", @required = "required" })
+                </div>
+                <button type="submit" class="btn btn-success mb-2 mr-2"><i class="fa fa-filter" aria-hidden="true"></i> Filtrar</button>
+                <a href="@Url.Action("Index", "Reservas")" class="btn btn-secondary mb-2"><i class="fa fa-eraser" aria-hidden="true"></i> Limpiar</a>
+            </div>
+        }
+    </div>
+    <div>
+        @Html.ActionLink("Crear Reserva", "Create", null, new { @class = "btn btn-primary" })
+    </div>
+</div>
+
+<table class="table table-bordered text-center">
+    <thead class="thead-light">
+        <tr>
+            <th>@Html.Raw("<i class='fa fa-hashtag' aria-hidden='true'></i>") @Html.DisplayNameFor(model => model.IdReserva)</th>
+            <th>@Html.Raw("<i class='fa fa-building' aria-hidden='true'></i>") @Html.DisplayNameFor(model => model.NombreSala)</th>
+            <th>@Html.Raw("<i class='fa fa-calendar' aria-hidden='true'></i>") @Html.DisplayNameFor(model => model.FechaReserva)</th>
+            <th>@Html.Raw("<i class='fa fa-user' aria-hidden='true'></i>") @Html.DisplayNameFor(model => model.NombreUsuario)</th>
+            <th>@Html.Raw("<i class='fa fa-calendar' aria-hidden='true'></i>") @Html.DisplayNameFor(model => model.FechaCreacion)</th>
+            <th>@Html.Raw("<i class='fa fa-cogs' aria-hidden='true'></i>") Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.IdReserva)</td>
+                <td>@Html.DisplayFor(modelItem => item.NombreSala)</td>
+                <td>@Html.DisplayFor(modelItem => item.FechaReserva)</td>
+                <td>@Html.DisplayFor(modelItem => item.NombreUsuario)</td>
+                <td>@Html.DisplayFor(modelItem => item.FechaCreacion)</td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.IdReserva }, new { @class = "btn btn-warning" }) |
+                    <button type="button" class="btn btn-danger" onclick="confirmDelete('@Html.Raw(item.IdReserva)', '@Html.Raw(item.NombreSala)')">@Html.Raw("<i class='fa fa-trash' aria-hidden='true'></i> Borrar")</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form id="deleteReservaForm">
+    @Html.AntiForgeryToken()
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Scripts/reserva.js"></script>
+}
+

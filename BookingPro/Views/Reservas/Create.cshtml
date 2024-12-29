@@ -1,0 +1,61 @@
+﻿@model BookingPro.Models.Reserva
+
+@{
+    ViewBag.Title = "Crear Reserva";
+}
+
+<h2 class="text-center"><strong>Crear Reserva</strong></h2>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4><strong>Formulario General</strong></h4>
+            </div>
+            <div class="card-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.SalaID, htmlAttributes: new { @class = "form-label" })
+                    @Html.DropDownListFor(model => model.SalaID, (SelectList)ViewBag.Salas, "Seleccione una sala", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SalaID, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.FechaReserva, htmlAttributes: new { @class = "form-label" })
+                    <input type="date" class="form-control" id="FechaReserva" name="FechaReserva" />
+                    @Html.ValidationMessageFor(model => model.FechaReserva, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Crear Reserva</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="text-center mt-4">
+    @Html.ActionLink("Volver a la Lista", "Index", null, new { @class = "btn btn-secondary" })
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <text>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '@TempData["ErrorMessage"]'
+                });
+                </text>
+            }
+        });
+    </script>
+}

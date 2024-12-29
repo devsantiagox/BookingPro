@@ -1,0 +1,53 @@
+﻿@model IEnumerable<BookingPro.Models.Sala>
+
+@{
+    ViewBag.Title = "View";
+}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<h2><strong>Gestión de Salas</strong></h2>
+
+<div class="d-flex justify-content-end mb-3">
+    @Html.ActionLink("Crear Sala", "Create", null, new { @class = "btn btn-primary" })
+</div>
+
+<table class="table table-bordered text-center">
+    <thead class="thead-light">
+        <tr>
+            <th><i class="fa fa-hashtag" aria-hidden="true"></i> @Html.DisplayNameFor(model => model.IdSala)</th>
+            <th><i class="fa fa-bookmark" aria-hidden="true"></i> @Html.DisplayNameFor(model => model.Nombre)</th>
+            <th><i class="fa fa-users" aria-hidden="true"></i> @Html.DisplayNameFor(model => model.Capacidad)</th>
+            <th><i class="fa fa-check-circle" aria-hidden="true"></i> @Html.DisplayNameFor(model => model.Disponibilidad)</th>
+            <th><i class="fa fa-calendar" aria-hidden="true"></i> @Html.DisplayNameFor(model => model.FechaCreacion)</th>
+            <th><i class="fa fa-cogs" aria-hidden="true"></i> Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.IdSala)</td>
+                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                <td>@Html.DisplayFor(modelItem => item.Capacidad)</td>
+                <td>@Html.DisplayFor(modelItem => item.Disponibilidad)</td>
+                <td>@Html.DisplayFor(modelItem => item.FechaCreacion)</td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.IdSala }, new { @class = "btn btn-warning" }) |
+                    <button type="button" class="btn btn-danger" onclick="confirmDelete('@Html.Raw(item.IdSala)', '@Html.Raw(item.Nombre)')"><i class="fa fa-trash" aria-hidden="true"></i> Borrar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form id="deleteSalaForm">
+    @Html.AntiForgeryToken()
+</form>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Scripts/sala.js"></script>
+}
